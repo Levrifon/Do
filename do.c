@@ -1,4 +1,3 @@
-#include "/home/enseign/PDS/include/makeargv.h" 
 #include <stdio.h>
 #include <unistd.h>
 #include <getopt.h>
@@ -6,6 +5,7 @@
 #include <sys/wait.h>
 #include <assert.h>
 #include <stdlib.h>
+#include "makeargv.h" 
 
 #define AND 0
 #define OR 1
@@ -20,6 +20,7 @@ int main(int argc, char* argv[]) {
 	int nb_son = 0;
 	int pid;
 	int ok = 0;
+	char **cmdargv;
 	struct option long_options[] = {
         	{"and",no_argument,0,  0 },
                 {"or",no_argument,0,  0 },
@@ -50,7 +51,8 @@ int main(int argc, char* argv[]) {
 				assert(0);
 			case 0:
 				argv[optind+idx +1] = NULL;
-				execvp(argv[optind+idx],argv+optind+idx);
+				assert(makeargv(argv[optind+idx], " \t", &cmdargv)>0);
+				execvp(cmdargv[0],cmdargv);
 				assert(0);
 			default:
 				nb_son++;
