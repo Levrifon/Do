@@ -11,7 +11,7 @@
 #define OR 1
 #define CC 2
 #define KILL 3
-
+/*pineuche!!!!!!*/
 int main(int argc, char* argv[]) {
 	int status;
 	int option_index = 0;
