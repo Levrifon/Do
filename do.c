@@ -11,11 +11,11 @@
 #define OR 1
 #define CC 2
 #define KILL 3
-/*pineuche!!!!!!*/
 int main(int argc, char* argv[]) {
 	int status;
 	int option_index = 0;
 	int option_or_and = -1;
+	int option_cc = 0;
 	int idx = 0;
 	int nb_son = 0;
 	int pid;
@@ -38,7 +38,7 @@ int main(int argc, char* argv[]) {
 			option_or_and = 0;
 			break;
 			case CC:
-			printf("coucou3\n");
+			option_cc = 1;
 			break;
 			case KILL:
 			printf("coucou4\n");
@@ -70,8 +70,16 @@ int main(int argc, char* argv[]) {
 		if(WIFEXITED(status)){
 			if(option_or_and == 1){
 				ok = ok && (WEXITSTATUS(status) == EXIT_SUCCESS);
+				if(option_cc == 1 && ok == 0){ /*si un processus renvoie 0, on est sur d'avoir raté donc on sort*/
+					printf("ok : 0\n");
+					return 0;
+				}
 			} else {
 				ok = ok || (WEXITSTATUS(status) == EXIT_SUCCESS);
+				if(option_cc == 1 && ok == 1){/*si un processus renvoie 1, on est sur d'avoir réussi donc on sort*/
+					printf("ok : 1\n");
+					return 1;
+				}
 			}
 		}
 	}
